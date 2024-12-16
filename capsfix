@@ -10,8 +10,8 @@ start_fix() {
     perl -0777 -ne 'print $& if /key <CAPS> {.*?};/s' "${TMPFILE}" > "${BACKUP}" && \
     echo "Caps Lock config backed up to ${BACKUP}..."
   fi
-  perl -0777 -i -pe 's/key <CAPS> {.*?};/key <CAPS> {\n\trepeat=no,\n\ttype[group1]="ALPHABETIC",\n\tsymbols[group1]=[ Caps_Lock, Caps_Lock],\n\tactions[group1]=[ LockMods(modifiers=Lock), Private(type=3,data[0]=1,data[1]=3,data[2]=3)]\n};/s' "${TMPFILE}"
-  xkbcomp -w 0 "${TMPFILE}" "${DISPLAY:-:0}"
+  perl -0777 -i -pe 's/key <CAPS> {.*?};/key <CAPS> {\n\trepeat=no,\n\ttype[group1]="ALPHABETIC",\n\tsymbols[group1]=[ Caps_Lock, Caps_Lock],\n\tactions[group1]=[ LockMods(modifiers=Lock), Private(type=3,data[0]=1,data[1]=3,data[2]=3)]\n};/s' "${TMPFILE}" && \
+  xkbcomp -w 0 "${TMPFILE}" "${DISPLAY:-:0}" && \
   echo "Caps Lock config switched to Mac/Windows style."
 }
 
@@ -21,9 +21,9 @@ stop_fix() {
     echo "No backup found. Using default config..."
     echo -e -n 'key <CAPS> {\n\ttype= "ONE_LEVEL",\n\tsymbols[Group1]= [      Caps_Lock ]\n    };' > "${BACKUP}"
   fi
-  xkbcomp -xkb "${DISPLAY:-:0}" "${TMPFILE}"
-  perl -0777 -i -pe "s/key <CAPS> {[^}]*};/`cat ${BACKUP}`/s" "${TMPFILE}"
-  xkbcomp -w 0 "${TMPFILE}" "${DISPLAY:-:0}"
+  xkbcomp -xkb "${DISPLAY:-:0}" "${TMPFILE}" && \
+  perl -0777 -i -pe "s/key <CAPS> {[^}]*};/`cat ${BACKUP}`/s" "${TMPFILE}" && \
+  xkbcomp -w 0 "${TMPFILE}" "${DISPLAY:-:0}" && \
   rm -f "${BACKUP}"
   echo "Caps Lock config reverted to Linux style."
 }
