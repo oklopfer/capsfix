@@ -7,7 +7,7 @@ A script to fix the nuisance of Caps Lock disable not toggling until key release
 - `bash`
 - `cat`
 - `perl`
-- `x11-xkb-utils` (Debian/Ubuntu)/`xorg-xkbcomp` (Arch)
+- Debian/Ubuntu: `x11-xkb-utils` / Arch: `xorg-xkbcomp`
 
 ## Installation
 
