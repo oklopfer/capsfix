@@ -32,10 +32,10 @@ Will this annoyance ever have a meaningful effect in practical settings? Probabl
 The original solution is found and explained in this wiki post: https://wiki.archlinux.org/title/Xorg/Keyboard_configuration#Switching_state_immediately_when_Caps_Lock_is_pressed
 
 This script allows for:
-- quick starting and stopping of the immediate switching
-    - where possible, your normal caps lock state will be saved to `~/.config/xkb_caps_backup`
+- Quick starting and stopping of the immediate switching
+    - Where possible, your normal caps lock state will be saved to `~/.config/xkb_caps_backup`
 
-- enabling and disabling it as persistent, per user (through an autostart `.desktop`)
+- Enabling and disabling it as persistent, per user (through an autostart `.desktop`)
     - It will only modify the keymap for the current session if just starting and stopping
  
 **NOTE:** Currently only works in X11. Wayland solution to come.
