@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
-BACKUP="/home/${USER}/.config/xkb_caps_backup"
+CAPSUSER="${2:-${USER:-$(whoami)}}"
+BACKUP="/home/${CAPSUSER}/.config/xkb_caps_backup"
 TMPFILE="/tmp/xkbmap"
 
 start_fix() {
-  mkdir -p "/home/${USER}/.config"
-  xkbcomp -xkb "${DISPLAY:-:0}" "${TMPFILE}"
+  mkdir -p "/home/${CAPSUSER}/.config"
+  touch "${TMPFILE}"
+  xkbcomp -xkb "${DISPLAY:-:0}" "${TMPFILE}" || return 1
   if [[ ! -f "${BACKUP}" ]]; then
     perl -0777 -ne 'print $& if /key <CAPS> {.*?};/s' "${TMPFILE}" > "${BACKUP}" && \
     echo "Caps Lock config backed up to ${BACKUP}..."
@@ -16,7 +18,7 @@ start_fix() {
 }
 
 stop_fix() {
-  mkdir -p "/home/${USER}/.config"
+  mkdir -p "/home/${CAPSUSER}/.config"
   if [[ ! -f "${BACKUP}" ]]; then
     echo "No backup found. Using default config..."
     echo -e -n 'key <CAPS> {\n\ttype= "ONE_LEVEL",\n\tsymbols[Group1]= [      Caps_Lock ]\n    };' > "${BACKUP}"
@@ -29,14 +31,17 @@ stop_fix() {
 }
 
 enable_fix() {
-  mkdir -p "/home/${USER}/.config/autostart"
-  echo -e "[Desktop Entry]\nType=Application\nExec=/usr/bin/capsfix start\nHidden=false\nX-GNOME-Autostart-enabled=true\nName=Caps Lock State Fix\nComment=Fixes Caps Lock to work like it does on Mac and Windows" > "/home/${USER}/.config/autostart/capsfix.desktop"
-  start_fix
-  echo "Config will remain Mac/Windows style until disabled."
+  mkdir -p "/home/${CAPSUSER}/.config/autostart"
+  echo -e "[Desktop Entry]\nType=Application\nExec=/usr/bin/capsfix start\nHidden=false\nX-GNOME-Autostart-enabled=true\nName=Caps Lock State Fix\nComment=Fixes Caps Lock to work like it does on Mac and Windows" > "/home/${CAPSUSER}/.config/autostart/capsfix.desktop"
+  if start_fix; then
+    echo "Config will remain Mac/Windows style until disabled."
+  else
+    rm -f "/home/${CAPSUSER}/.config/autostart/capsfix.desktop"
+  fi
 }
 
 disable_fix() {
-  rm -rf "/home/${USER}/.config/autostart/capsfix.desktop"
+  rm -f "/home/${CAPSUSER}/.config/autostart/capsfix.desktop"
   stop_fix
   echo "Config will remain Linux style until enabled again."
 }
