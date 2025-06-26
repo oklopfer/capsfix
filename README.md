@@ -38,7 +38,7 @@ This script allows for:
 - Enabling and disabling it as persistent, per user (through an autostart `.desktop`)
     - It will only modify the keymap for the current session if just starting and stopping
  
-Works on both X11 and Wayland (see required packages).
+**NOTE:** Currently only works in X11. Wayland solution to come.
 
 ## Installation
 
