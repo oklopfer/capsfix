@@ -20,12 +20,12 @@ enable_fix() {
     exit 1
   }
 
-  echo "#: Loading input devices..."
+  echo "#: Loading keyd input devices..."
   "${cmd[0]}" -m &
   PID=$!
   sleep 1
   if ! ps -p "${PID}" &> /dev/null; then
-    echo "E: Loading inputs with keyd failed!" >&2
+    echo "E: Loading keyd input devices failed!" >&2
     exit 1
   fi
   kill -INT "${PID}"
@@ -44,7 +44,7 @@ enable_fix() {
       systemctl restart keyd
     fi
   } || {
-    echo "E: Enabling keyd with systemd failed!" >&2
+    echo "E: Enabling keyd with systemctl failed!" >&2
     exit 1
   }
 
@@ -67,7 +67,7 @@ disable_fix() {
   if systemctl is-enabled keyd &> /dev/null; then
     echo "#: Disabling keyd with systemctl..."
     systemctl disable --now keyd || {
-      echo "E: Disabling keyd with systemd failed!" >&2
+      echo "E: Disabling keyd with systemctl failed!" >&2
       exit 1
     }
   fi
