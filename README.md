@@ -29,9 +29,9 @@ Will this annoyance ever have a meaningful effect in practical settings? Probabl
 
 ## The Solution
 
-The original solution is found and explained in [this wiki post](https://wiki.archlinux.org/title/Xorg/Keyboard_configuration#Switching_state_immediately_when_Caps_Lock_is_pressed). However, this only works in X11.
+The original solution is found and explained in [this wiki post](https://wiki.archlinux.org/title/Xorg/Keyboard_configuration#Switching_state_immediately_when_Caps_Lock_is_pressed), which uses `xkbcomp`. However, this only works in X11.
 
-In order to work in both X11 and Wayland, this script uses the keymapping daemon [`keyd`](https://github.com/rvaiya/keyd), which interacts with `xkb`, and sets the caps lock key to a macro of itself, causing the trigger to happen immediately.
+In order to work in both X11 and Wayland, this script uses the keymapping daemon [`keyd`](https://github.com/rvaiya/keyd), which also interacts with `xkb`, and sets the caps lock key to a macro of itself, causing the trigger to happen immediately.
 
 ## Installation
 
