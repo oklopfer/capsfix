@@ -29,25 +29,17 @@ Will this annoyance ever have a meaningful effect in practical settings? Probabl
 
 ## The Solution
 
-The original solution is found and explained in this wiki post: https://wiki.archlinux.org/title/Xorg/Keyboard_configuration#Switching_state_immediately_when_Caps_Lock_is_pressed
+The original solution is found and explained in [this wiki post](https://wiki.archlinux.org/title/Xorg/Keyboard_configuration#Switching_state_immediately_when_Caps_Lock_is_pressed), which uses `xkbcomp`. However, this only works in X11.
 
-This script allows for:
-- Quick starting and stopping of the immediate switching
-    - Where possible, your normal caps lock state will be saved to `~/.config/xkb_caps_backup`
-
-- Enabling and disabling it as persistent, per user (through an autostart `.desktop`)
-    - It will only modify the keymap for the current session if just starting and stopping
- 
-**NOTE:** Currently only works in X11. Wayland solution to come.
+In order to work in both X11 and Wayland, this script uses the keymapping daemon [`keyd`](https://github.com/rvaiya/keyd), which also interacts with `xkb`, and sets the caps lock key to a macro of itself, causing the trigger to happen immediately.
 
 ## Installation
 
 ### Requirements
 
 - `bash`
-- `cat`
-- `perl`
-- Debian/Ubuntu: `x11-xkb-utils` / Arch: `xorg-xkbcomp`
+- `systemd`
+- `keyd`
 
 ### 
 
@@ -59,5 +51,5 @@ sudo cp capsfix/capsfix /usr/bin
 ## Usage
 
 ```bash
-capsfix {enable|disable|start|stop}
+capsfix {enable|disable}
 ```
