@@ -21,16 +21,15 @@ enable_fix() {
   }
 
   echo "#: Loading input devices..."
-  {
-    "${cmd[0]}" -m &
-    PID=$!
-    sleep 1
-    kill -INT "${PID}"
-    wait "${PID}"
-  } || {
+  "${cmd[0]}" -m &
+  PID=$!
+  sleep 1
+  if ! ps -p "${PID}" &> /dev/null; then
     echo "E: Loading inputs with keyd failed!" >&2
     exit 1
-  }
+  fi
+  kill -INT "${PID}"
+  wait "${PID}"
 
   {
     if ! ((restart)); then
