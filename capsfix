@@ -13,7 +13,7 @@ enable_fix() {
 
   {
     mkdir -p "${confile%/*}" \
-      && echo -e '[ids]\n*\n\n[main]\ncapslock = macro(capslock)\n' \
+      && echo -e '[ids]\n*\n\n[main]\ncapslock = oneshotm(capslock, capslock)\n[capslock:capslock]\n' \
         | tee "${confile}" &> /dev/null
   } || {
     echo "E: Config file creation failed!" >&2
